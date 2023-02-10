@@ -3,74 +3,574 @@
 <head>
     <meta charset="UTF-8">
     <title>Academic Family Tree</title>
-    <link rel="stylesheet" href="assets/css/treeData.css">
     <style>
-.maintree
-{
-    height: 100%;
-    width: 100%;
-    overflow: auto;
-}
+        * {
+            padding: 0;
+        }
+
+        .tree ul {
+            padding-top: 20px;
+            position: relative;
+
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+        }
+
+        .tree li {
+            float: left;
+            text-align: center;
+            list-style-type: none;
+            position: relative;
+            padding: 20px 5px 0 5px;
+
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+        }
+
+        .tree li::before, .tree li::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 50%;
+            border-top: 1px solid #ccc;
+            width: 50%;
+            height: 20px;
+        }
+
+        .tree li::after {
+            right: auto;
+            left: 50%;
+            border-left: 1px solid #ccc;
+        }
+
+        .tree li:only-child::after, .tree li:only-child::before {
+            display: none;
+        }
+
+        .tree li:only-child {
+            padding-top: 0;
+        }
+
+        .tree li:first-child::before, .tree li:last-child::after {
+            border: 0 none;
+        }
+
+        .tree li:last-child::before {
+            border-right: 1px solid #ccc;
+            border-radius: 0 5px 0 0;
+            -webkit-border-radius: 0 5px 0 0;
+            -moz-border-radius: 0 5px 0 0;
+        }
+
+        .tree li:first-child::after {
+            border-radius: 5px 0 0 0;
+            -webkit-border-radius: 5px 0 0 0;
+            -moz-border-radius: 5px 0 0 0;
+        }
+
+        .tree ul ul::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            border-left: 1px solid #ccc;
+            width: 0;
+            height: 20px;
+        }
+
+        .tree li a {
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: #666;
+            font-family: arial, verdana, tahoma, serif;
+            font-size: 14px;
+            display: inline-block;
+
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+        }
+
+        .tree li a:hover, .tree li a:hover + ul li a {
+            background: #c8e4f8;
+            color: #000;
+            border: 1px solid #94a0b4;
+        }
+
+        .tree li a:hover + ul li::after,
+        .tree li a:hover + ul li::before,
+        .tree li a:hover + ul::before,
+        .tree li a:hover + ul ul::before {
+            border-color: #94a0b4;
+        }
+
+        .main_heading {
+            font-family: arial, verdana, tahoma, serif;
+        }
+
+        .main_tree_class {
+            height: 100%;
+            width: 100%;
+            overflow: auto;
+        }
+
+        .name_name {
+            font-weight: bold;
+        }
+
+        .university_name {
+            max-width: 200px;
+            font-style: italic;
+        }
+
+        .report_name {
+            max-width: 200px;
+        }
+
     </style>
 </head>
-<body>
-  <div id="container" class="maintree">
+<body style="width: max-content;">
+<h1 class="main_heading">The Academic Family Tree of Dr. Curtis O. Pedersen</h1>
+<p>(may need to scroll to the right!)</p>
+<div id="container" class="main_tree_class">
     <div id="tree"></div>
-  </div>
-  <script type="text/javascript" src="assets/js/treeData.js"></script>
-  <script>
-let tree = {
-	home: {value: "Pedersen Academic Family Tree", parent : ""},
-	richards1895: {value: "Charles Russ Richards", parent : "home"},
-	wohlenberg1916: {value: "Dr. Walter Jacob Wohlenberg", parent : "richards1895"},
-	rohsenow1944: {value: "Dr. Warren Rohsenow", parent : "wohlenberg1916"},
-	arpaci1958: {value: "Dr. Vedat S. Arpaci", parent : "rohsenow1944"},
-	eshghy1963: {value: "Dr. Siavash Eshghy", parent : "arpaci1958"},
-	pedersen1968: {value: "Dr. Curtis O. Pedersen", parent : "eshghy1963"},
-	mouen1973: {value: "Dr. Ernest Mouen", parent : "pedersen1968"},
-	hittle1981: {value: "Dr. Doug Hittle", parent : "pedersen1968"},
-	parkinson1982: {value: "Dr. Alan Parkinson", parent : "pedersen1968"},
-	bahnfleth1989: {value: "Dr. William Bahnfleth", parent : "pedersen1968"},
-	spitler1990: {value: "Dr. Jeffrey Spitler", parent : "pedersen1968"},
-	liesen1995: {value: "Dr. Richard Liesen", parent : "pedersen1968"},
-	fisher1995: {value: "Dr. Daniel Fisher", parent : "pedersen1968"},
-	rigazzi1995: {value: "Dr. Franco Rigazzi", parent : "pedersen1968"},
-	strand1995: {value: "Dr. Rick Strand", parent : "pedersen1968"},
-	zeitlow1995: {value: "Dr. David Zeitlow", parent : "pedersen1968"},
-	taylor1996: {value: "Dr. Russell Taylor", parent : "pedersen1968"},
-	vandoren1990: {value: "Dr. Vance VanDoren", parent : "hittle1981"},
-	isahn1999: {value: "Dr. Abbud Isahn", parent : "hittle1981"},
-	lee2005: {value: "Dr. Amy Lee", parent : "hittle1981"},
-	hodgson2010: {value: "Dr. David Hodgson", parent : "hittle1981"},
-	chambers1994: {value: "Dr. Terrance Chambers", parent : "parkinson1982"},
-	kong2006: {value: "Dr. Weixiu Kong", parent : "fisher1995"},
-	chanvit2007: {value: "Dr. Chantrasrisalai Chanvit", parent : "fisher1995"},
-	iu2007: {value: "Dr. Ipseng Iu", parent : "fisher1995"},
-	padmanabhan2011: {value: "Dr. Sankaranarayanan Padmanabhan", parent : "fisher1995"},
-	lee2013: {value: "Dr. Edwin Lee", parent : "fisher1995"},
-	lee2008: {value: "Dr. Kwang Ho Lee", parent : "strand1995"},
-	chae2010: {value: "Dr. Young Tae Chae", parent : "strand1995"},
-	kang2011: {value: "Dr. Daeho Kang", parent : "strand1995"},
-	stergeon2012: {value: "Dr. Doug Stergeon", parent : "strand1995"},
-	musser1998: {value: "Dr. Amy Musser", parent : "bahnfleth1989"},
-	kowalski2001: {value: "Dr. Wladyslaw Kowalski", parent : "bahnfleth1989"},
-	song2004: {value: "Dr. Jing Song", parent : "bahnfleth1989"},
-	lau2009: {value: "Dr. Josephine Lau", parent : "bahnfleth1989"},
-	nguyen1992: {value: "Dr. Dam Nguyen", parent : "spitler1990"},
-	yavuzturk1999: {value: "Dr. Cenk Yavuzturk", parent : "spitler1990"},
-	kim2001: {value: "Dr. Taecheol Kim", parent : "spitler1990"},
-	jin2002: {value: "Dr. Hui Jin", parent : "spitler1990"},
-	deng2004: {value: "Dr. Zheng Deng", parent : "spitler1990"},
-	liu2005: {value: "Dr. Xiaobing Liu", parent : "spitler1990"},
-	xiao2006: {value: "Dr. Dongyi Xiao", parent : "spitler1990"},
-	nigusse2007: {value: "Dr. Bereket Nigusse", parent : "spitler1990"},
-	xu2007: {value: "Dr. Xiaowei Xu", parent : "spitler1990"},
-	mitchell2019: {value: "Dr. Matt Mitchell", parent : "spitler1990"},
-	wang1998: {value: "Dr. Gongtao Wang", parent : "chambers1994"},
-	chowdhury2001: {value: "Dr. Hassan Chowdhury", parent : "chambers1994"},
-	chaisson2007: {value: "Dr. Andrew Chiasson", parent : "yavuzturk1999"}
-};
-renderTree(tree, "#tree");
-  </script>
+</div>
+<script>
+    let tree = {
+        root: {
+            name: "Pedersen Academic Ph.D. Family Tree",
+            parent: "",
+            university: null,
+            thesis_or_dissertation: null,
+            report_name: null,
+            year: null,
+        },
+        richards1895: {
+            name: "Charles Russ Richards",
+            parent: "root",
+            university: "Cornell University",
+            thesis_or_dissertation: "Thesis",
+            report_name: "",
+            year: 1895,
+        },
+        wohlenberg1916: {
+            name: "Dr. Walter Jacob Wohlenberg",
+            parent: "richards1895",
+            university: "University of Illinois",
+            thesis_or_dissertation: "Thesis",
+            report_name: "Theory of energetic activities for fluid",
+            year: 1916,
+        },
+        rohsenow1944: {
+            name: "Dr. Warren Rohsenow",
+            parent: "wohlenberg1916",
+            university: "Yale University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Prime mover power ith supercharged constant pressure combustion",
+            year: 1944,
+        },
+        arpaci1958: {
+            name: "Dr. Vedat S. Arpaci",
+            parent: "rohsenow1944",
+            university: "Massachusetts Institute of Technology",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Theory of transient heat transfer in laminar flow, applied to the entrance region of tubes with heat capacity",
+            year: 1958,
+        },
+        eshghy1963: {
+            name: "Dr. Siavash Eshghy",
+            parent: "arpaci1958",
+            university: "University of Michigan",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "The Effect of Longitudinal Oscillations on Fluid Flow and Heat Transfer from Vertical Surfaces in Free Convection",
+            year: 1963,
+        },
+        pedersen1968: {
+            name: "Dr. Curtis O. Pedersen",
+            parent: "eshghy1963",
+            university: "Carnegie Mellon University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "The dynamics and heat transfer characteristics of water droplets impinging upon a heated surface",
+            year: 1968,
+        },
+        mouen1973: {
+            name: "Dr. Ernest Mouen",
+            parent: "pedersen1968",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Application Of The Thermal Response Factor Method To Building Elements With Air Cavities",
+            year: 1973,
+        },
+        hittle1981: {
+            name: "Dr. Doug Hittle",
+            parent: "pedersen1968",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Calculating building heating and cooling loads using the frequency response of multilayered slabs",
+            year: 1981,
+        },
+        parkinson1982: {
+            name: "Dr. Alan Parkinson",
+            parent: "pedersen1968",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "The Design Of Optimal Heat Exchanger Networks",
+            year: 1982,
+        },
+        bahnfleth1989: {
+            name: "Dr. William Bahnfleth",
+            parent: "pedersen1968",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Three-dimensional modelling of heat transfer from slab floors",
+            year: 1989,
+        },
+        spitler1990: {
+            name: "Dr. Jeffrey Spitler",
+            parent: "pedersen1968",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "An experimental investigation of air flow and convective heat transfer in enclosures having large ventilative flow rates",
+            year: 1990,
+        },
+        liesen1995: {
+            name: "Dr. Richard Liesen",
+            parent: "pedersen1968",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Development of a response factor approach for modeling the energy effects of combined heat and mass transfer with vapor adsorption in building elements",
+            year: 1995,
+        },
+        fisher1995: {
+            name: "Dr. Daniel Fisher",
+            parent: "pedersen1968",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "An experimental investigation of mixed convection heat transfer in a rectangular enclosure",
+            year: 1995,
+        },
+        rigazzi1995: {
+            name: "Dr. Franco Rigazzi",
+            parent: "pedersen1968",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Thermodynamic optimization of evaporators with zeotropic refrigerant mixtures",
+            year: 1995,
+        },
+        strand1995: {
+            name: "Dr. Rick Strand",
+            parent: "pedersen1968",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Heat source transfer functions and their application to low temperature radiant heating systems",
+            year: 1995,
+        },
+        zeitlow1995: {
+            name: "Dr. David Zeitlow",
+            parent: "pedersen1968",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Heat transfer and flow characteristics of condensing refrigerants in small-channel cross-flow heat exchangers",
+            year: 1995,
+        },
+        taylor1996: {
+            name: "Dr. Russell Taylor",
+            parent: "pedersen1968",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Development of an integrated building energy simulation with optimal central plant control",
+            year: 1996,
+        },
+        vandoren1990: {
+            name: "Dr. Vance VanDoren",
+            parent: "hittle1981",
+            university: "Purdue University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "The iterative least squares parameter estimation technique for intermittent systems with applications to intelligent building control",
+            year: 1990,
+        },
+        isahn1999: {
+            name: "Dr. Abbud Isahn",
+            parent: "hittle1981",
+            university: "Colorado State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Solar space heating and cooling by selective use of the components of a desiccant cooling system",
+            year: 1999,
+        },
+        lee2005: {
+            name: "Dr. Amy Lee",
+            parent: "hittle1981",
+            university: "Colorado State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Phase change material in floor tiles for thermal energy storage",
+            year: 2005,
+        },
+        hodgson2010: {
+            name: "Dr. David Hodgson",
+            parent: "hittle1981",
+            university: "Colorado State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Investigation of a non-linear controller that combines stead state predictions with integral action via reinforcement learning applied to a cross-flow water-to-air heat exchanger",
+            year: 2010,
+        },
+        chambers1994: {
+            name: "Dr. Terrance Chambers",
+            parent: "parkinson1982",
+            university: "Brigham Young University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Multiple Knowledge Representations for the Rapid Prototyping and Validation of Engineering Expert Systems",
+            year: 1994,
+        },
+        kong2006: {
+            name: "Dr. Weixiu Kong",
+            parent: "fisher1995",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "A Convective Heat Transfer Model for Simulation of Rooms with Attached Wall Jets",
+            year: 2006,
+        },
+        chanvit2007: {
+            name: "Dr. Chantrasrisalai Chanvit",
+            parent: "fisher1995",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Optical and Thermal Fenestration Models for Building Cooling Load Calculations",
+            year: 2007,
+        },
+        iu2007: {
+            name: "Dr. Ipseng Iu",
+            parent: "fisher1995",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Development of Air-to-air Heat Pump Simulation Program with Advanced Heat Exchanger Circuitry Algorithm",
+            year: 2007,
+        },
+        padmanabhan2011: {
+            name: "Dr. Sankaranarayanan Padmanabhan",
+            parent: "fisher1995",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Study of Frost Growth on Heat Exchangers  Used as Outdoor Coils in Air Source Heat Pump Systems",
+            year: 2011,
+        },
+        lee2013: {
+            name: "Dr. Edwin Lee",
+            parent: "fisher1995",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "An Improved Hydronic Loop System Simulation Algorithm with a Zone-coupled Horizontal Ground Heat Exchanger Model for Whole Building Energy Simulation",
+            year: 2013,
+        },
+        lee2008: {
+            name: "Dr. Kwang Ho Lee",
+            parent: "strand1995",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Configuration and Operating Condition Design Analysis of Sofc Systems for Building Applications",
+            year: 2008,
+        },
+        chae2010: {
+            name: "Dr. Young Tae Chae",
+            parent: "strand1995",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Development of a hybrid heat source radiant system using an embedded concentric tube heat exchanger",
+            year: 2010,
+        },
+        kang2011: {
+            name: "Dr. Daeho Kang",
+            parent: "strand1995",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Advances in the application of passive down-draft evaporative cooling technology in the cooling of buildings",
+            year: 2011,
+        },
+        stergeon2012: {
+            name: "Dr. Doug Stergeon",
+            parent: "strand1995",
+            university: "University of Illinois at Urbana-Champaign",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Economic performance of architectural firms: an application of production theory",
+            year: 2012,
+        },
+        musser1998: {
+            name: "Dr. Amy Musser",
+            parent: "bahnfleth1989",
+            university: "Penn State",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Field measurement and modelled performance of full-scale cylindrical stratified chilled-water storage tanks",
+            year: 1998,
+        },
+        kowalski2001: {
+            name: "Dr. Wladyslaw Kowalski",
+            parent: "bahnfleth1989",
+            university: "Penn State",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Design and Optimization of UVGI Air Disinfection Systems",
+            year: 2001,
+        },
+        song2004: {
+            name: "Dr. Jing Song",
+            parent: "bahnfleth1989",
+            university: "Penn State",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Building Robust Chemical Reaction Mechanisms: Next Generation Automatic Model Construction Software",
+            year: 2004,
+        },
+        lau2009: {
+            name: "Dr. Josephine Lau",
+            parent: "bahnfleth1989",
+            university: "Penn State",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Lamp and In-duct Device modeling for UVGI System Performance Prediction",
+            year: 2009,
+        },
+        nguyen1992: {
+            name: "Dr. Dam Nguyen",
+            parent: "spitler1990",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Non-Azeotropic Refrigerant Mixture (NARM) Vapor Compression Cycles",
+            year: 1992,
+        },
+        yavuzturk1999: {
+            name: "Dr. Cenk Yavuzturk",
+            parent: "spitler1990",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Modeling of Vertical Ground Loop Heat Exchangers for Ground Source Heat Pump Systems",
+            year: 1999,
+        },
+        kim2001: {
+            name: "Dr. Taecheol Kim",
+            parent: "spitler1990",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Optimum Duct Design for Variable Air Volume Systems",
+            year: 2001,
+        },
+        jin2002: {
+            name: "Dr. Hui Jin",
+            parent: "spitler1990",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Parameter Estimation Based Models of Water Source Heat Pumps",
+            year: 2002,
+        },
+        deng2004: {
+            name: "Dr. Zheng Deng",
+            parent: "spitler1990",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Modeling of Standing Column Wells in Ground Source Heat Pump Systems",
+            year: 2004,
+        },
+        liu2005: {
+            name: "Dr. Xiaobing Liu",
+            parent: "spitler1990",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Development and Experimental Validation of Simulation of Hydronic Snow Melting Systems For Bridges",
+            year: 2005,
+        },
+        xiao2006: {
+            name: "Dr. Dongyi Xiao",
+            parent: "spitler1990",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Inter-Model, Analytical, and Experimental Validation of A Heat Balance Based Residential Cooling Load Calculation Procedure",
+            year: 2006,
+        },
+        nigusse2007: {
+            name: "Dr. Bereket Nigusse",
+            parent: "spitler1990",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Improvements to the Radiant Time Series Method Cooling Load Calculation Procedure",
+            year: 2007,
+        },
+        xu2007: {
+            name: "Dr. Xiaowei Xu",
+            parent: "spitler1990",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Simulation and Optimal Control of Hybrid Ground Source Heat Pump Systems",
+            year: 2007,
+        },
+        mitchell2019: {
+            name: "Dr. Matt Mitchell",
+            parent: "spitler1990",
+            university: "Oklahoma State University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: null,
+            year: 2019,
+        },
+        wang1998: {
+            name: "Dr. Gongtao Wang",
+            parent: "chambers1994",
+            university: "Lamar University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Application of Genetic programming and Artificial Neural Networks to Improve Engineering Optimization",
+            year: 1998,
+        },
+        chowdhury2001: {
+            name: "Dr. Hassan Chowdhury",
+            parent: "chambers1994",
+            university: "Lamar University",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "The Use of Simulated Annealing to Solve Large Transportation-Location Problems With Euclidean Distances",
+            year: 2001,
+        },
+        chaisson2007: {
+            name: "Dr. Andrew Chiasson",
+            parent: "yavuzturk1999",
+            university: "University of Wyoming",
+            thesis_or_dissertation: "Dissertation",
+            report_name: "Simulation and design of hybrid geothermal heat pump systems",
+            year: 2007,
+        }
+    };
+
+    /* Recursive function to build tree structure :) */
+    function visit(obj, node) {
+        let i, treeString;
+        if (node === "root") {
+            treeString = `<li><a href='#'><p>${obj[node].name}</p></a>`;
+        } else {
+            treeString = `<li><a href='#'><p class="name_name">${obj[node].name}</p><p class="university_name">${obj[node].university}</p><p class="report_name">${obj[node].thesis_or_dissertation}: ${obj[node].report_name} (${obj[node].year})</p></a>`;
+        }
+        let sons = [];
+        for (i in obj) {
+            if (obj[i].parent === node) {
+                sons.push(i);
+            }
+        }
+        if (sons.length > 0) {
+            treeString += '<ul>';
+            for (i in sons) {
+                treeString += visit(obj, sons[i]);
+            }
+            treeString += '</ul>';
+        }
+        return treeString;
+    }
+
+    function renderTree(data, select) {
+        let main = document.querySelector(select);
+        let tree_canvas = document.createElement('div');
+        tree_canvas.className = 'tree';
+        tree_canvas.innerHTML = visit(data, "root");
+        main.appendChild(tree_canvas);
+    }
+
+    renderTree(tree, "#tree");
+</script>
 </body>
 </html>
